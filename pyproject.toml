@@ -1,0 +1,11 @@
+[project]
+name = "kindle2anki"
+version = "0.1.0"
+description = "A tool to convert Kindle highlights to Anki flashcards"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { file = "LICENSE" }
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
