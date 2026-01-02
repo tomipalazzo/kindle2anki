@@ -50,40 +50,45 @@ class AnkiCard:
         # Apply cloze blank to the example
         cloze_example = self.apply_cloze_to_text(self.example)
         
-        # Add hint below example
-        front = f"{cloze_example}\nhint: ({self.hint})"
+        # Front: Example sentence (centered) + Hint (blue, larger, centered)
+        front = '<div style="text-align: center; font-size: 20px;">'
+        front += f'"{cloze_example}"<br/><br/>'
+        front += f'<span style="color: #0066cc; font-size: 24px; font-weight: bold;">{self.hint}</span>'
+        front += '</div>'
         
         # Add image if available (only on first card)
         if self.image_path and self.example_index == 1:
             if self.image_path.startswith("http"):
-                front += f'\n<img src="{self.image_path}" style="max-width: 300px; max-height: 300px;">'
+                front += f'<br/><img src="{self.image_path}" style="max-width: 300px; max-height: 300px;">'
             else:
-                front += f'\n<img src="{self.image_path}" style="max-width: 300px; max-height: 300px;">'
+                front += f'<br/><img src="{self.image_path}" style="max-width: 300px; max-height: 300px;">'
         
         return front
     
     def build_back(self) -> str:
-        """Build the back of the card with word, definition and audio."""
-        back = f"<b>{self.word}</b><br/>\n"
-        back += f"<i>{self.full_definition}</i><br/><br/>\n"
+        """Build the back of the card with word and audio buttons."""
+        # Back: Word centered, large, bold
+        back = '<div style="text-align: center;">'
+        back += f'<h2 style="font-size: 32px; margin: 20px 0;">{self.word}</h2>'
         
         # Add audio references (using just filenames)
-        back += "<b>Audio:</b><br/>\n"
+        back += '<div style="margin-top: 20px;">'
         if self.word_audio_path:
-            # Extract just the filename
             word_audio_filename = self.word_audio_path.split('/')[-1]
-            back += f"Word: [sound:{word_audio_filename}]<br/>\n"
+            back += f'[sound:{word_audio_filename}]&nbsp;&nbsp;'
         if self.example_audio_path:
-            # Extract just the filename
             example_audio_filename = self.example_audio_path.split('/')[-1]
-            back += f"Example: [sound:{example_audio_filename}]<br/>\n"
+            back += f'[sound:{example_audio_filename}]'
+        back += '</div>'
         
-        # Add book context
+        back += '</div>'
+        
+        # Add book context at bottom
         if self.book_title:
-            back += f"<br/><small>From: <i>{self.book_title}</i>"
+            back += f'<br/><small style="text-align: center;">From: <i>{self.book_title}</i>'
             if self.location:
-                back += f" ({self.location})"
-            back += "</small>"
+                back += f' ({self.location})'
+            back += '</small>'
         
         return back
     
